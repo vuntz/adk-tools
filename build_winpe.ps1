@@ -88,6 +88,7 @@ if ($built_for_crowbar)
   $crowbar_boot        = "boot"
   $crowbar_source      = "source"
   $crowbar_unattend    = "unattend"
+  $crowbar_common      = "windows-common"
   $crowbar_extra       = "extra"
 }
 else
@@ -188,7 +189,7 @@ if($built_for_crowbar)
 {
   Add-Content $startnet_cmd "`n powershell `"`$DHCPServer = @(Get-WMIObject -Class Win32_NetworkAdapterConfiguration -Filter IPEnabled=True -ComputerName . | Select-Object -Property DHCPServer).DHCPServer[0] ; Write-Host DHCPServer=`$DHCPServer ; net use $crowbar_mountpoint \\`$DHCPServer\$crowbar_share`""
   Add-Content $startnet_cmd "`n $crowbar_mountpoint\$crowbar_folder\$crowbar_source\setup.exe /noreboot /unattend:$crowbar_mountpoint\$crowbar_folder\$crowbar_unattend\unattended.xml"
-  Add-Content $startnet_cmd "`n copy $crowbar_mountpoint\$crowbar_folder\$crowbar_extra\set_state.ps1 \"
+  Add-Content $startnet_cmd "`n copy $crowbar_mountpoint\$crowbar_common\$crowbar_extra\set_state.ps1 \"
   Add-Content $startnet_cmd "`n powershell -ExecutionPolicy RemoteSigned \set_state.ps1"
   Add-Content $startnet_cmd "`n exit"
 }
